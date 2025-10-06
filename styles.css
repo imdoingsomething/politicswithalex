@@ -24,7 +24,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
 .skip-link:focus{left:1rem;top:1rem;width:auto;height:auto;background:var(--gold);color:#000;padding:.5rem .75rem;border-radius:8px;z-index:1000}
 
 /* Hero */
-.hero{position:relative;min-height:92vh;background:url('/assets/hero.jpg') center/cover no-repeat;color:var(--ink)}
+.hero{position:relative;min-height:92vh;background:url('/assets/hero.png') center/cover no-repeat;color:var(--ink)}
 .hero__overlay{position:absolute;inset:0;background:radial-gradient(60% 60% at 50% 50%, rgba(0,0,0,.35) 0%, rgba(0,0,0,.65) 65%, rgba(0,0,0,.85) 100%)}
 .hero__inner{position:relative;z-index:1;min-height:92vh;display:grid;place-items:center;text-align:center;padding:8vh 1rem}
 .title{font:800 48px/1.08 EB Garamond,Georgia,serif;letter-spacing:.2em;margin:0 0 .5rem;text-transform:uppercase}
