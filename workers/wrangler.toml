@@ -1,0 +1,23 @@
+name = "politics-with-alex-api"
+main = "api-worker.js"
+compatibility_date = "2024-01-01"
+
+routes = [
+    { pattern = "politicswithalex.com/api/*", custom_domain = false }
+]
+
+# KV Namespace for caching content and rate limiting
+# Create with: wrangler kv:namespace create "CONTENT_KV"
+# Then update the id below
+kv_namespaces = [
+    { binding = "CONTENT_KV", id = "YOUR_KV_NAMESPACE_ID_HERE" }
+]
+
+# Environment variables (secrets set via: wrangler secret put SECRET_NAME)
+# Required secrets:
+# - RESEND_API_KEY
+# - YOUTUBE_API_KEY
+# - MEDIUM_USERNAME (optional, can set here)
+
+[vars]
+MEDIUM_USERNAME = "politicswithalex"

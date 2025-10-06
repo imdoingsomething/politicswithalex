@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Politics With Alex</title>
+  <meta name="description" content="Politics With Alex — videos and essays that make sense of power. Wake up. It's later than you think." />
+  <meta property="og:title" content="Politics With Alex" />
+  <meta property="og:description" content="Wake up. It's later than you think." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="/assets/hero.jpg" />
+  <link rel="preload" as="image" href="/assets/hero.jpg" />
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="preconnect" href="https://i.ytimg.com" crossorigin />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- Hero -->
+  <header class="hero" role="banner" aria-label="Site hero">
+    <div class="hero__overlay"></div>
+    <div class="hero__inner">
+      <h1 class="title">POLITICS WITH ALEX</h1>
+      <p class="tagline">Wake up. It's later than you think.</p>
+      <div class="hero__cta" aria-hidden="true">
+        <span>Explore</span>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- Orbit Hub -->
+    <section class="hub" aria-labelledby="hub-heading">
+      <div class="container">
+        <h2 id="hub-heading" class="section-title">Start Here</h2>
+        <p class="section-sub">Latest videos and articles orbiting the center — hover to pause, click to open.</p>
+
+        <div class="orbit" data-reduced-motion="false">
+          <div class="orbit__center" aria-hidden="true">PW•A</div>
+          <ul class="orbit__ring" id="orbit-list" aria-live="polite">
+            <!-- Items injected by script.js -->
+          </ul>
+        </div>
+
+        <noscript>
+          <p class="noscript">JavaScript is off. See content on <a href="https://www.youtube.com/@politicswithalex">YouTube</a> and <a href="#posts-fallback">Medium</a>.</p>
+        </noscript>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section class="about" aria-labelledby="about-heading">
+      <div class="container container--narrow">
+        <h2 id="about-heading" class="section-title">About the Show</h2>
+        <p class="about__text">I'm Alex — a veteran logistics officer turned political explainer. I unpack complex stories with clear timelines, receipts, and plain language so people who don't "do politics" can still understand what matters and why. Start with a video or a quick read, then join the list to get new breakdowns when they drop.</p>
+      </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter" aria-labelledby="newsletter-heading">
+      <div class="container container--narrow">
+        <h2 id="newsletter-heading" class="section-title">Join the Newsletter</h2>
+        <form id="subscribeForm" class="form form--inline" novalidate>
+          <label class="sr-only" for="subscribe-email">Email</label>
+          <input id="subscribe-email" name="email" type="email" inputmode="email" autocomplete="email" required placeholder="you@example.com" />
+          <button type="submit" class="btn">Join the list</button>
+          <input type="text" name="hp" class="hp" tabindex="-1" aria-hidden="true" autocomplete="off" />
+        </form>
+        <p class="form__help">1–2 emails/week. No spam. Unsubscribe anytime.</p>
+        <div id="subscribeStatus" class="form__status" role="status" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- Submit a Story -->
+    <section class="submit" aria-labelledby="submit-heading">
+      <div class="container container--narrow">
+        <h2 id="submit-heading" class="section-title">Got a lead or a story?</h2>
+        <form id="submitForm" class="form" novalidate>
+          <div class="grid">
+            <div>
+              <label for="name">Name (optional)</label>
+              <input id="name" name="name" type="text" autocomplete="name" />
+            </div>
+            <div>
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" inputmode="email" autocomplete="email" required />
+            </div>
+          </div>
+          <div>
+            <label for="subject">Subject</label>
+            <input id="subject" name="subject" type="text" required />
+          </div>
+          <div>
+            <label for="message">Story / Tip</label>
+            <textarea id="message" name="message" rows="6" required></textarea>
+          </div>
+          <input type="text" name="hp" class="hp" tabindex="-1" aria-hidden="true" autocomplete="off" />
+          <button type="submit" class="btn">Send securely</button>
+          <div id="submitStatus" class="form__status" role="status" aria-live="polite"></div>
+        </form>
+        <p class="form__help">Sensitive info? Keep details minimal and I'll follow up securely.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" role="contentinfo">
+    <div class="container container--narrow footer__inner">
+      <nav aria-label="Social links" class="socials">
+        <a href="https://www.youtube.com/@politicswithalex" target="_blank" rel="noopener">YouTube</a>
+        <a href="#" target="_blank" rel="noopener">Medium</a>
+        <a href="#" target="_blank" rel="noopener">X/Twitter</a>
+        <a href="#" target="_blank" rel="noopener">Instagram</a>
+      </nav>
+      <small>© <span id="year"></span> Politics With Alex</small>
+    </div>
+  </footer>
+
+  <!-- Modal (for video/article preview) -->
+  <div id="modal" class="modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal__backdrop" data-close></div>
+    <div class="modal__card" role="document">
+      <button class="modal__close" aria-label="Close" data-close>&times;</button>
+      <h3 id="modal-title" class="modal__title"></h3>
+      <div id="modal-body" class="modal__body"></div>
+      <div class="modal__actions">
+        <a id="modal-link" class="btn btn--ghost" href="#" target="_blank" rel="noopener">Open Original</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="./script.js" defer></script>
+</body>
+</html>
