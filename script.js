@@ -43,7 +43,7 @@ console.log('[PWA] Script starting...');
       return;
     }
     list.innerHTML = '';
-    const radius = 260; // px, matches transform-origin in CSS
+    const radius = 240; // px, matches transform-origin in CSS
     const count = items.length;
 
     items.forEach((item, i) => {

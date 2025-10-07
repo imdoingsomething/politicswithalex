@@ -39,7 +39,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
 .orbit__center{position:absolute;inset:50% auto auto 50%;transform:translate(-50%,-50%);background:var(--panel);border:1px solid #252a33;border-radius:999px;padding:.9rem 1.1rem;font-weight:700;letter-spacing:.15em}
 .orbit__ring{list-style:none;margin:0;padding:0;position:absolute;inset:0;border-radius:50%;border:1px dashed var(--ring);animation:spin 12s linear infinite}
 .orbit__ring:hover{animation-play-state:paused}
-.orbit__ring > li{position:absolute;top:50%;left:50%;transform-origin:-260px 0;}
+.orbit__ring > li{position:absolute;top:50%;left:50%;transform-origin:-240px 0;}
 .orbit__item{display:block;width:160px;background:#0f1319;border:1px solid #242933;border-radius:14px;overflow:hidden;box-shadow:0 6px 24px rgba(0,0,0,.35)}
 .orbit__thumb{width:100%;height:90px;object-fit:cover;background:#111}
 .orbit__meta{padding:.65rem .7rem}
