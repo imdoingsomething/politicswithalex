@@ -42,6 +42,16 @@ console.log('[PWA] Script starting...');
       console.error('[PWA] orbit-list element not found!');
       return;
     }
+
+    // Detect if we should use carousel (< 1920px width) or orbit
+    const useCarousel = window.innerWidth < 1920;
+    console.log('[PWA] Screen width:', window.innerWidth, 'Using carousel:', useCarousel);
+
+    if (useCarousel) {
+      renderCarousel(items);
+      return;
+    }
+
     list.innerHTML = '';
     const radius = 240; // px, matches transform-origin in CSS
     const count = items.length;
@@ -88,6 +98,76 @@ console.log('[PWA] Script starting...');
       li.appendChild(a);
       list.appendChild(li);
     });
+  }
+
+  // Render horizontal scrollable carousel for mobile/tablet
+  function renderCarousel(items){
+    console.log('[PWA] renderCarousel called with', items.length, 'items');
+    const hubSection = document.querySelector('.hub .container');
+    if (!hubSection) return;
+
+    // Remove existing carousel if present
+    const existingCarousel = document.querySelector('.carousel-wrapper');
+    if (existingCarousel) existingCarousel.remove();
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'carousel-wrapper';
+
+    const carousel = document.createElement('div');
+    carousel.className = 'carousel';
+    carousel.setAttribute('role', 'region');
+    carousel.setAttribute('aria-label', 'Content carousel');
+
+    items.forEach(item => {
+      const a = document.createElement('a');
+      a.href = item.url;
+      a.className = 'orbit__item';
+      a.setAttribute('role','button');
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        openModal(item);
+      });
+
+      const img = document.createElement('img');
+      const mediumLogo = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22160%22 height=%2290%22 viewBox=%220 0 160 90%22%3E%3Crect fill=%22%23000%22 width=%22160%22 height=%2290%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23fff%22 font-size=%2224%22 font-weight=%22700%22 font-family=%22sans-serif%22%3EM%3C/text%3E%3C/svg%3E';
+      img.src = item.thumb || item.image || (item.kind === 'post' ? mediumLogo : 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22160%22 height=%2290%22></svg>');
+      img.alt = '';
+      img.className = 'orbit__thumb';
+
+      const meta = document.createElement('div');
+      meta.className = 'orbit__meta';
+
+      const kicker = document.createElement('div');
+      kicker.className = 'orbit__kicker';
+      kicker.textContent = item.kind?.toUpperCase() || 'CONTENT';
+
+      const title = document.createElement('div');
+      title.className = 'orbit__title';
+      title.textContent = item.title || 'Untitled';
+
+      meta.appendChild(kicker);
+      meta.appendChild(title);
+      a.appendChild(img);
+      a.appendChild(meta);
+      carousel.appendChild(a);
+    });
+
+    // Add scroll indicator
+    const scrollIndicator = document.createElement('div');
+    scrollIndicator.className = 'scroll-indicator';
+    scrollIndicator.setAttribute('aria-hidden', 'true');
+    scrollIndicator.innerHTML = '<span>Swipe to explore</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>';
+
+    wrapper.appendChild(carousel);
+    wrapper.appendChild(scrollIndicator);
+
+    // Insert after section-sub
+    const sectionSub = hubSection.querySelector('.section-sub');
+    if (sectionSub) {
+      sectionSub.after(wrapper);
+    } else {
+      hubSection.appendChild(wrapper);
+    }
   }
 
   // Modal logic

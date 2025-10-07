@@ -8,7 +8,7 @@
   --ring:rgba(216,167,90,0.25);
 }
 *{box-sizing:border-box}
-html,body{height:100%}
+html,body{height:100%;overflow-x:hidden}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif}
 img{max-width:100%;display:block}
 a{color:var(--gold);text-decoration:none}
@@ -86,11 +86,28 @@ textarea{resize:vertical}
 .modal__title{font:700 1.25rem EB Garamond,Georgia,serif;margin:.5rem 0 1rem}
 .modal__body iframe{width:100%;aspect-ratio:16/9;border:0;border-radius:12px}
 
-/* Responsive */
+/* Responsive - Carousel for screens below 1920px wide */
+@media (max-width:1919px){
+  .orbit{display:none}
+  .hub{position:relative}
+
+  .carousel-wrapper{position:relative;width:100%;overflow:hidden;margin:2rem 0}
+  .carousel{display:flex;gap:1.5rem;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;padding:1rem 1rem 1.5rem;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .carousel::-webkit-scrollbar{display:none}
+  .carousel > *{flex:0 0 auto;scroll-snap-align:start}
+
+  .carousel .orbit__item{width:280px;display:block}
+
+  .scroll-indicator{position:absolute;bottom:-1.5rem;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:.5rem;color:var(--muted);font-size:.85rem;animation:slideHint 2s ease-in-out infinite}
+  .scroll-indicator svg{width:20px;height:20px}
+
+  @keyframes slideHint{0%,100%{transform:translateX(-50%)}50%{transform:translateX(-40%)}}
+}
+
 @media (max-width:760px){
   .title{font-size:36px}
   .tagline{font-size:18px}
-  .orbit__item{width:140px}
+  .carousel .orbit__item{width:240px}
   .grid{grid-template-columns:1fr}
   .form--inline{grid-template-columns:1fr}
 }
