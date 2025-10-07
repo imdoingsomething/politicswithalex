@@ -224,7 +224,7 @@ console.log('[PWA] Script starting...');
       });
       const json = await res.json();
       if(json.ok){
-        submitStatus.textContent = 'Sent. I'll follow up soon.';
+        submitStatus.textContent = 'Sent. I\'ll follow up soon.';
         submitForm.reset();
       } else {
         submitStatus.textContent = json.error || 'Something went wrong.';
