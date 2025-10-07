@@ -1,4 +1,8 @@
+console.log('[PWA] Script starting...');
+
 (() => {
+  console.log('[PWA] IIFE executing');
+
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
@@ -12,13 +16,17 @@
 
   // Fetch helpers with error handling
   async function getJSON(url){
+    console.log('[PWA] Fetching:', url);
     try {
       const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
+      console.log('[PWA] Response status:', res.status, 'for', url);
       if (!res.ok) {
         console.error(`API error ${url}: HTTP ${res.status}`);
         return null;
       }
-      return await res.json();
+      const data = await res.json();
+      console.log('[PWA] Got data from', url, ':', data);
+      return data;
     } catch (e) {
       console.error(`Fetch error ${url}:`, e);
       return null;
@@ -27,8 +35,13 @@
 
   // Render orbit items (mix videos + posts)
   function renderOrbit(items){
+    console.log('[PWA] renderOrbit called with', items.length, 'items:', items);
     const list = document.getElementById('orbit-list');
-    if (!list) return;
+    console.log('[PWA] orbit-list element:', list);
+    if (!list) {
+      console.error('[PWA] orbit-list element not found!');
+      return;
+    }
     list.innerHTML = '';
     const radius = 260; // px, matches transform-origin in CSS
     const count = items.length;
@@ -110,37 +123,44 @@
 
   // Compose content
   async function loadContent(){
+    console.log('[PWA] loadContent starting...');
     try{
-      console.log('Loading content...');
+      console.log('[PWA] About to fetch videos and posts...');
       const [videos, posts] = await Promise.all([
         getJSON('/api/videos'),
         getJSON('/api/posts')
       ]);
-      console.log('Videos:', videos);
-      console.log('Posts:', posts);
+      console.log('[PWA] Raw videos response:', videos);
+      console.log('[PWA] Raw posts response:', posts);
 
       const v = (videos?.items || []).slice(0,3).map(x=>({
         kind:'video', id:x.id, title:x.title, url:x.url, thumb:x.thumb, published:x.published
       }));
+      console.log('[PWA] Processed videos:', v);
+
       const p = (posts?.items || []).slice(0,3).map(x=>({
         kind:'post', id:x.id, title:x.title, url:x.url, image:x.image, published:x.published, excerpt:x.excerpt
       }));
+      console.log('[PWA] Processed posts:', p);
+
       const items = [...v, ...p];
-      console.log('Total items:', items.length, items);
+      console.log('[PWA] Combined items count:', items.length, 'items:', items);
 
       if (items.length === 0){
-        console.log('No items, showing fallback');
+        console.log('[PWA] No items found, showing fallback');
         // Fallback links when APIs fail
         renderOrbit([
           {kind:'video', id:'', title:'Watch on YouTube', url:'https://www.youtube.com/@politicswithalex', thumb:'https://i.ytimg.com/vi/VL_twc7KDM8/hqdefault.jpg', published:''},
           {kind:'post', id:'', title:'Read on Medium', url:'https://medium.com/@alex_96450', image:'', published:''}
         ]);
       } else {
-        console.log('Rendering', items.length, 'items');
+        console.log('[PWA] Calling renderOrbit with', items.length, 'items');
         renderOrbit(items);
       }
+      console.log('[PWA] loadContent completed successfully');
     }catch(err){
-      console.error('loadContent error:', err);
+      console.error('[PWA] loadContent FATAL ERROR:', err);
+      console.error('[PWA] Error stack:', err.stack);
       // Show fallback even on catastrophic failure
       renderOrbit([
         {kind:'video', id:'', title:'Watch on YouTube', url:'https://www.youtube.com/@politicswithalex', thumb:'https://i.ytimg.com/vi/VL_twc7KDM8/hqdefault.jpg', published:''},
@@ -149,7 +169,9 @@
     }
   }
 
+  console.log('[PWA] About to call loadContent...');
   loadContent();
+  console.log('[PWA] loadContent called (async, will complete later)');
 
   // Newsletter form
   const subscribeForm = document.getElementById('subscribeForm');
