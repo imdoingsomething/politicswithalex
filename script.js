@@ -48,12 +48,15 @@ console.log('[PWA] Script starting...');
 
     items.forEach((item, i) => {
       const angle = (i / count) * Math.PI * 2; // radians
+      const angleDeg = (angle * 180/Math.PI).toFixed(2);
       const li = document.createElement('li');
-      li.style.transform = `rotate(${(angle * 180/Math.PI).toFixed(2)}deg)`;
+      li.style.transform = `rotate(${angleDeg}deg)`;
 
       const a = document.createElement('a');
       a.href = item.url;
       a.className = 'orbit__item';
+      // Counter-rotate to keep card upright
+      a.style.transform = `rotate(-${angleDeg}deg)`;
       a.setAttribute('role','button');
       a.addEventListener('click', (e) => {
         e.preventDefault();
@@ -61,7 +64,9 @@ console.log('[PWA] Script starting...');
       });
 
       const img = document.createElement('img');
-      img.src = item.thumb || item.image || 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22160%22 height=%2290%22></svg>';
+      // Use Medium logo for posts without images
+      const mediumLogo = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22160%22 height=%2290%22 viewBox=%220 0 160 90%22%3E%3Crect fill=%22%23000%22 width=%22160%22 height=%2290%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23fff%22 font-size=%2224%22 font-weight=%22700%22 font-family=%22sans-serif%22%3EM%3C/text%3E%3C/svg%3E';
+      img.src = item.thumb || item.image || (item.kind === 'post' ? mediumLogo : 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22160%22 height=%2290%22></svg>');
       img.alt = '';
       img.className = 'orbit__thumb';
 
