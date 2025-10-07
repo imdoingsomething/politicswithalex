@@ -10,11 +10,19 @@
     if (ring) ring.style.animation = 'none';
   }
 
-  // Fetch helpers
+  // Fetch helpers with error handling
   async function getJSON(url){
-    const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
-    if (!res.ok) throw new Error('Network error');
-    return res.json();
+    try {
+      const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
+      if (!res.ok) {
+        console.error(`API error ${url}: HTTP ${res.status}`);
+        return null;
+      }
+      return await res.json();
+    } catch (e) {
+      console.error(`Fetch error ${url}:`, e);
+      return null;
+    }
   }
 
   // Render orbit items (mix videos + posts)
@@ -105,25 +113,27 @@
     try{
       console.log('Loading content...');
       const [videos, posts] = await Promise.all([
-        getJSON('/api/videos').catch((e)=>{console.error('Videos error:', e); return {items:[]};}),
-        getJSON('/api/posts').catch((e)=>{console.error('Posts error:', e); return {items:[]};})
+        getJSON('/api/videos'),
+        getJSON('/api/posts')
       ]);
       console.log('Videos:', videos);
       console.log('Posts:', posts);
-      const v = (videos.items || []).slice(0,3).map(x=>({
+
+      const v = (videos?.items || []).slice(0,3).map(x=>({
         kind:'video', id:x.id, title:x.title, url:x.url, thumb:x.thumb, published:x.published
       }));
-      const p = (posts.items || []).slice(0,3).map(x=>({
+      const p = (posts?.items || []).slice(0,3).map(x=>({
         kind:'post', id:x.id, title:x.title, url:x.url, image:x.image, published:x.published, excerpt:x.excerpt
       }));
       const items = [...v, ...p];
       console.log('Total items:', items.length, items);
+
       if (items.length === 0){
         console.log('No items, showing fallback');
-        // Fallback links
+        // Fallback links when APIs fail
         renderOrbit([
-          {kind:'video', id:'', title:'Visit the YouTube channel', url:'https://www.youtube.com/@politicswithalex', thumb:'', published:''},
-          {kind:'post', id:'', title:'Read essays on Medium', url:'#', image:'', published:''}
+          {kind:'video', id:'', title:'Watch on YouTube', url:'https://www.youtube.com/@politicswithalex', thumb:'https://i.ytimg.com/vi/VL_twc7KDM8/hqdefault.jpg', published:''},
+          {kind:'post', id:'', title:'Read on Medium', url:'https://medium.com/@alex_96450', image:'', published:''}
         ]);
       } else {
         console.log('Rendering', items.length, 'items');
@@ -131,6 +141,11 @@
       }
     }catch(err){
       console.error('loadContent error:', err);
+      // Show fallback even on catastrophic failure
+      renderOrbit([
+        {kind:'video', id:'', title:'Watch on YouTube', url:'https://www.youtube.com/@politicswithalex', thumb:'https://i.ytimg.com/vi/VL_twc7KDM8/hqdefault.jpg', published:''},
+        {kind:'post', id:'', title:'Read on Medium', url:'https://medium.com/@alex_96450', image:'', published:''}
+      ]);
     }
   }
 
