@@ -103,10 +103,13 @@
   // Compose content
   async function loadContent(){
     try{
+      console.log('Loading content...');
       const [videos, posts] = await Promise.all([
-        getJSON('/api/videos').catch(()=>({items:[]})),
-        getJSON('/api/posts').catch(()=>({items:[]}))
+        getJSON('/api/videos').catch((e)=>{console.error('Videos error:', e); return {items:[]};}),
+        getJSON('/api/posts').catch((e)=>{console.error('Posts error:', e); return {items:[]};})
       ]);
+      console.log('Videos:', videos);
+      console.log('Posts:', posts);
       const v = (videos.items || []).slice(0,3).map(x=>({
         kind:'video', id:x.id, title:x.title, url:x.url, thumb:x.thumb, published:x.published
       }));
@@ -114,17 +117,20 @@
         kind:'post', id:x.id, title:x.title, url:x.url, image:x.image, published:x.published, excerpt:x.excerpt
       }));
       const items = [...v, ...p];
+      console.log('Total items:', items.length, items);
       if (items.length === 0){
+        console.log('No items, showing fallback');
         // Fallback links
         renderOrbit([
           {kind:'video', id:'', title:'Visit the YouTube channel', url:'https://www.youtube.com/@politicswithalex', thumb:'', published:''},
           {kind:'post', id:'', title:'Read essays on Medium', url:'#', image:'', published:''}
         ]);
       } else {
+        console.log('Rendering', items.length, 'items');
         renderOrbit(items);
       }
     }catch(err){
-      console.error(err);
+      console.error('loadContent error:', err);
     }
   }
 
